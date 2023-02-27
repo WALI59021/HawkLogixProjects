@@ -105,44 +105,189 @@ public class CreateFacilityRestApi implements Queueable {
         // ...
     }
 }
-In your trigger, you can create an instance of the FacilityParams class for each record and set the parameter values using the record fields. You can then create an instance of the CreateFacilityRestApi class and pass the FacilityParams instance to the constructor.
 
-Here's an example of how you can modify your trigger code to use the FacilityParams class:
-
-csharp
-Copy code
-trigger IntegrateFacility on Facility__c (after insert) {
-    if (Trigger.isAfter && Trigger.isInsert) {
-        List<CreateFacilityRestApi> jobs = new List<CreateFacilityRestApi>();
+trigger IntegrateFacility on Facility__c (AFTER INSERT) {
+    
+    
+        if (Trigger.isAfter && Trigger.isInsert) {
+        //List<createFacilityRestApi> jobs = new List<createFacilityRestApi>();
         for (Facility__c facility : Trigger.new) {
             // Create an instance of the FacilityParams class and set the parameter values
-            FacilityParams params = new FacilityParams();
-            params.name = facility.Name;
-            params.address = facility.Address__c;
-            params.city = facility.City__c;
-            params.state = facility.State__c;
+            
+            FacilityPostRequestWrapperClass params = new FacilityPostRequestWrapperClass();
+            params.FacilityName = facility.Name;
+            params.Regional =facility.Regional__c;
+            params.FacilitySystem = facility.System__c;
+            params.MainFacility = facility.Main_Facility__c;    
+            params.FacilityType = facility.Facility_Type__c;
+            params.MD_StaffSourceName = facility.MD_Staff_Source_Name__c;
+            params.FacilityShortName = facility.Facility_Short_Name__c;
+            params.TSAccountID = facility.TS_Account_ID__c;                
+            params.ClientSiteID = facility.Client_Site_ID__c;
+            params.PulsaraHookId = facility.Pulsara_Hook_Id__c;
+            params.Implementation = facility.Implementation__c;
+            params.PrioritizeforDispatch = facility.Prioritize_for_Dispatch__c;
+            params.GoLive_TeleNeuro = facility.GoLive_TeleNeuro__c;
+            params.GOLiveInUpcomingDays = facility.GO_Live_In_Upcoming_Days__c;
+            params.StrokeDesignation = facility.Stroke_Designation__c;
+            params.EMRType =facility.EMR_Type__c;
+            params.TransferCenter = facility.Transfer_Center__c;
+            params.TransferCallBackNumber = facility.Transfer_Call_Back_Number__c;
+            params.BedSize = facility.Bed_Size__c;
+            params.ThrombolyticOrderset = facility.Thrombolytic_Orderset__c;
+            params.ImagingProtocol = facility.Imaging_Protocol__c;
+            params.WakeUpStrokeProtocol = facility.Wake_Up_Stroke_Protocol__c;
+            params.Billing = facility.Billing__c;
+            params.ThrombolyticUsed = facility.Thrombolytic_Used__c;
+            params.EMRSpecifics = facility.EMR_Specifics__c;
+            params.AISoftware = facility.AI_Software__c;
+            params.NoteTemplateUsed = facility.Note_Template_Used__c;
+            params.TransferProcess = facility.Transfer_Process__c;
+            params.MD_StaffSourceID = facility.MD_Staff_Source_ID__c;
+            params.FacTimezone = facility.fac_timezone__c;            
+            params.ServiceType = facility.Service_Type__c;
+            params.VideoSoftware = facility.Video_Software__c;
+            params.ChargeCapture = facility.Charge_Capture__c;
+            params.Facility_Go_Live_Date_TeleNeuro = facility.Facility_Go_Live_Date_TeleNeuro__c;
+            params.Description = facility.Description__c;          
+            params.facaddressLine1 = facility.Address__Street__s;
+            params.facaddressLine2 = facility.Address__Street__s;
+            params.facCity = facility.Address__City__s;
+            params.fac_modified_date = facility.LastModifiedDate;
+            params.lastModifiedById = facility.LastModifiedById;
+            params.lastModifiedDate = facility.LastModifiedDate;
+            params.facStatetkey = facility.Address__StateCode__s;
+            params.createdDate = facility.CreatedDate;
+            
+            createFacilityRestApi job = new createFacilityRestApi(params);
+            System.enqueueJob(job);
+            // String lastModifiedByName = UserInfo.getName(lastModifiedById);
             // Create an instance of the CreateFacilityRestApi class and pass the parameter values
-            jobs.add(new CreateFacilityRestApi(params));
+            //jobs.add(new CreateFacilityRestApi(params));
         }
-        System.enqueueJobs(jobs);
+            //  System.enqueueJob(jobs);
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+           
+            /* if (Trigger.isAfter && Trigger.isInsert) {
+                List<createFacilityRestApi> jobs = new List<createFacilityRestApi>();
+                for (Facility__c facility : Trigger.new) {
+                    jobs.add(new createFacilityRestApi(facility.Name));
+                }
+                System.enqueueJobs(jobs);
+             }  */
+    
+    
+         /*   if (Trigger.isAfter && Trigger.isInsert) {
+                for (Facility__c facility : Trigger.new) {
+                    createFacilityRestApi job = new createFacilityRestApi(facility.Name);
+                    System.enqueueJob(job);
+                }
+            }  */
+    
+  /*
+     CONCEPTS
+        when the constructor is called 
+         
+        public class MyClass {
+            private String name;
+            private Integer age;
+        
+            public MyClass(String n, Integer a) {
+                name = n;
+                age = a;
+            }
+        }
+        In this example, the constructor MyClass(String n, Integer a) initializes the instance variables name and age to the values passed in as parameters.
+        
+        When you create an instance of this class, the constructor is called to initialize the instance variables:
+
+        MyClass myObj = new MyClass("John Doe", 30);
+    
+
+
+
+
+         when to use this keyword
+            Without using this.maxSpeed, the maxSpeed parameter would be assigned to a local variable with the same name, and the instance variable would remain uninitialized. 
+            This can lead to unexpected behavior in the class and cause errors when trying to access the instance variable later on.
+            So, we use this.maxSpeed in the constructor to ensure that we are setting the value of the instance variable, and not a local variable with the same name.
+      
+         when to use private and protected
+         
+            We use private when we want to restrict access to a class member to only the class in which it is declared. 
+            This is useful when we want to encapsulate the implementation details of a class and prevent other classes from accessing or modifying its state directly.
+        
+            We use protected when we want to provide access to a class member to any subclass that may extend the class. 
+            This can be useful when designing a class hierarchy and we want to provide certain behavior or state to subclasses that may need it.
+*/  
+
+    
+      /*  if(trigger.isAfter && trigger.isInsert){
+            
+            list<Facility__c> faciltyLst = trigger.new;
+            set<string> facilityNames = new set<string>();
+            
+            for(Facility__c facility : faciltyLst ){
+                facilityNames.add(facility.name);
+            }
+            
+            createFacilityRestApi job = new createFacilityRestApi();  
+            for(string facility : facilityNames ){
+                job.FacilityName = facility;            
+                System.enqueueJob(job);
+            }
+                
+        }*/
+    
+     /*   if (Trigger.isAfter && Trigger.isInsert) {
+            List<Facility__c> facilities = Trigger.new;
+            
+              
+            for (Facility__c facility : facilities) {
+                createFacilityRestApi job = new createFacilityRestApi();
+                String Name = facility.Name;
+                System.enqueueJob(job, Name);
+            }  
+            
+           
+            
+            
+        }  */
+       
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
-In this modified code, we are creating an instance of the FacilityParams class for each record and setting the parameter values using the record fields.
-We then create an instance of the CreateFacilityRestApi class and pass the FacilityParams instance to the constructor. 
-The params instance variable of the CreateFacilityRestApi class is set to the parameter value passed in the constructor. 
-This allows the execute method of the CreateFacilityRestApi class to use the parameter values passed in the FacilityParams instance for each job that is processed.
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
