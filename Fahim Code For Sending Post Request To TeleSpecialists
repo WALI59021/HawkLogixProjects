@@ -1,0 +1,207 @@
+There will be three codes here for the queueable class that will be receiving the data from Trigger.
+HERE WE WILL BE USING THE 
+ 
+CODE NUMBER 1 == > At first we will be creating a wrapper class within our main class and then a trigger that will keep invoking enqueue class.
+CODE NUMBER 2 == > At SECOND we will be creating a wrapper class SAPARATELY TO  main class and then a trigger that will keep invoking enqueue class.
+CODE NUMBER 2 == > AT THIRD THERE WILL BE A TEST CLASS COVEING ALL THE CODE 
+
+
+
+
+
+CODE NUMBER 1 ============================ 
+public class CreateFacilityRestApi implements Queueable {
+    
+    // Wrapper class to hold the parameters
+    public class FacilityParams {
+        public String name { get; set; }
+        public String address { get; set; }
+        public String city { get; set; }
+        public String state { get; set; }
+        // Add additional parameters as needed
+    }
+    
+    private FacilityParams params;
+    
+    public CreateFacilityRestApi(FacilityParams params) {
+        this.params = params;
+    }
+    
+    public void execute(QueueableContext context) {
+        // Use the parameter values in the REST API call
+        String name = params.name;
+        String address = params.address;
+        String city = params.city;
+        String state = params.state;
+        // Perform REST API call using the parameter values
+        // ...
+    }
+}
+
+In this modified code, we have defined a wrapper class FacilityParams to hold the additional parameters that we want to pass to the CreateFacilityRestApi class. 
+The wrapper class contains get and set methods for each parameter.
+We have also modified the constructor of the CreateFacilityRestApi class to accept an instance of the FacilityParams class as a parameter. 
+The params instance variable of the CreateFacilityRestApi class is set to the parameter value passed in the constructor.
+In the execute method of the CreateFacilityRestApi class, we use the parameter values from the FacilityParams class to perform the REST API call.
+To use the modified class with the trigger, you can create an instance of the FacilityParams class for each record and pass it to the CreateFacilityRestApi constructor.
+Here's an example of how you can modify the trigger code to use the wrapper class:
+
+
+trigger IntegrateFacility on Facility__c (after insert) {
+    if (Trigger.isAfter && Trigger.isInsert) {
+        List<CreateFacilityRestApi> jobs = new List<CreateFacilityRestApi>();
+        for (Facility__c facility : Trigger.new) {
+            // Create an instance of the FacilityParams class and set the parameter values
+            CreateFacilityRestApi.FacilityParams params = new CreateFacilityRestApi.FacilityParams();
+            params.name = facility.Name;
+            params.address = facility.Address__c;
+            params.city = facility.City__c;
+            params.state = facility.State__c;
+            // Create an instance of the CreateFacilityRestApi class and pass the parameter values
+            jobs.add(new CreateFacilityRestApi(params));
+        }
+        System.enqueueJobs(jobs);
+    }
+}
+In this modified code, we are creating an instance of the FacilityParams class for each record and setting the parameter values using the record fields. 
+We then create an instance of the CreateFacilityRestApi class and pass the FacilityParams instance to the constructor. 
+We add all CreateFacilityRestApi instances to the jobs list and enqueue them using the System.enqueueJobs method. 
+
+
+
+
+
+
+CODE NUMBER 2 ============================
+
+Here's an example of how you can define the FacilityParams class as a separate class:
+
+
+public class FacilityParams {
+    public String name { get; set; }
+    public String address { get; set; }
+    public String city { get; set; }
+    public String state { get; set; }
+    // Add additional parameters as needed
+}
+
+You can then modify your CreateFacilityRestApi class to use the FacilityParams class as follows:
+
+public class CreateFacilityRestApi implements Queueable {
+    
+    private FacilityParams params;
+    
+    public CreateFacilityRestApi(FacilityParams params) {
+        this.params = params;
+    }
+    
+    public void execute(QueueableContext context) {
+        // Use the parameter values in the REST API call
+        String name = params.name;
+        String address = params.address;
+        String city = params.city;
+        String state = params.state;
+        // Perform REST API call using the parameter values
+        // ...
+    }
+}
+In your trigger, you can create an instance of the FacilityParams class for each record and set the parameter values using the record fields. You can then create an instance of the CreateFacilityRestApi class and pass the FacilityParams instance to the constructor.
+
+Here's an example of how you can modify your trigger code to use the FacilityParams class:
+
+csharp
+Copy code
+trigger IntegrateFacility on Facility__c (after insert) {
+    if (Trigger.isAfter && Trigger.isInsert) {
+        List<CreateFacilityRestApi> jobs = new List<CreateFacilityRestApi>();
+        for (Facility__c facility : Trigger.new) {
+            // Create an instance of the FacilityParams class and set the parameter values
+            FacilityParams params = new FacilityParams();
+            params.name = facility.Name;
+            params.address = facility.Address__c;
+            params.city = facility.City__c;
+            params.state = facility.State__c;
+            // Create an instance of the CreateFacilityRestApi class and pass the parameter values
+            jobs.add(new CreateFacilityRestApi(params));
+        }
+        System.enqueueJobs(jobs);
+    }
+}
+In this modified code, we are creating an instance of the FacilityParams class for each record and setting the parameter values using the record fields.
+We then create an instance of the CreateFacilityRestApi class and pass the FacilityParams instance to the constructor. 
+The params instance variable of the CreateFacilityRestApi class is set to the parameter value passed in the constructor. 
+This allows the execute method of the CreateFacilityRestApi class to use the parameter values passed in the FacilityParams instance for each job that is processed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CODE NUMBER 3 ============================ TEST CLASS
+
+
+@IsTest
+private class IntegrateFacilityTest {
+    private static List<Facility__c> facilities;
+    
+    @testSetup
+    static void setup() {
+        // Create test records
+        facilities = new List<Facility__c>{
+            new Facility__c(Name = 'Facility 1', Address__c = '123 Main St', City__c = 'Anytown', State__c = 'CA'),
+            new Facility__c(Name = 'Facility 2', Address__c = '456 Oak Ave', City__c = 'Smallville', State__c = 'NY')
+        };
+        insert facilities;
+    }
+    
+    @isTest
+    public static void testIntegrateFacility() {
+        // Create FacilityParams instances for the test records
+        FacilityParams params1 = new FacilityParams();
+        params1.name = facilities[0].Name;
+        params1.address = facilities[0].Address__c;
+        params1.city = facilities[0].City__c;
+        params1.state = facilities[0].State__c;
+        FacilityParams params2 = new FacilityParams();
+        params2.name = facilities[1].Name;
+        params2.address = facilities[1].Address__c;
+        params2.city = facilities[1].City__c;
+        params2.state = facilities[1].State__c;
+        
+        // Enqueue the CreateFacilityRestApi jobs for the test records
+        Test.startTest();
+        List<CreateFacilityRestApi> jobs = new List<CreateFacilityRestApi>();
+        jobs.add(new CreateFacilityRestApi(params1));
+        jobs.add(new CreateFacilityRestApi(params2));
+        System.enqueueJobs(jobs);
+        Test.stopTest();
+        
+        // Verify that the jobs were enqueued
+        List<AsyncApexJob> asyncJobs = [SELECT Id, Status FROM AsyncApexJob WHERE JobType = 'Queueable' AND ApexClass.Name = 'CreateFacilityRestApi'];
+        System.assertEquals(2, asyncJobs.size());
+        System.assertEquals('Queued', asyncJobs[0].Status);
+        System.assertEquals('Queued', asyncJobs[1].Status);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
