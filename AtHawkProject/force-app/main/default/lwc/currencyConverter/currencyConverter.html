@@ -1,0 +1,85 @@
+<template>  
+    
+    <div class="slds-var-m-around_medium">
+
+        <div style="padding-left:30%;padding-right:30%; padding-top: 1%;" >
+        <lightning-card title="Currency Converter">
+
+            <div class="slds-var-m-around_medium" style="padding-right:70%">
+            <lightning-input type="text" label="" 
+            placeholder="Amount"
+            value={initialAmount}
+            onchange={handleChange} >
+            </lightning-input>
+            </div>
+
+            
+            <div class="slds-var-m-around_medium" >
+            <lightning-layout>
+              
+                    <lightning-layout-item>
+                        <lightning-combobox                      
+                            value={fromValue}
+                            placeholder={fromValue}
+                            options={options}
+                            onchange={handleFrom} >
+                        </lightning-combobox>   
+                    </lightning-layout-item>
+    
+                    
+                        <!-- <img src="imgs.jpg" width="50" height="50" /> -->
+                       
+
+                    <div class="slds-var-m-left_medium" >
+                    <lightning-layout-item>
+                        <lightning-combobox
+                            value={toValue}
+                            placeholder={toValue}
+                            options={options}
+                            onchange={handleTo} >
+                        </lightning-combobox>
+                    </lightning-layout-item>
+                   </div> 
+                
+            </lightning-layout>
+            </div>
+            
+           
+
+
+            <div class="slds-align_absolute-center" style="height:10rem; font-weight:bolder; font-size:larger   ">
+                <div>
+                    <template if:true={resultVisible}>
+                        
+                            {initialAmount} {fromValue} = {result} {toValue}
+                        
+                    </template>           
+                </div>       
+            </div>
+
+
+
+            <div class="slds-align_absolute-center" style="height:5rem" >
+                <lightning-button class="slds-var-m-left_x-small"
+                variant="brand" label="Convert" title="Convert" 
+                onclick={handleClick} >
+                </lightning-button>
+            </div>
+        
+
+
+
+
+
+        </lightning-card>
+    </div>
+    </div>
+
+
+
+    
+
+
+
+
+</template>

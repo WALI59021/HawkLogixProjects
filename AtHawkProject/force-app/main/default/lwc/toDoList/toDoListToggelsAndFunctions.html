@@ -1,0 +1,157 @@
+<template>
+    <div style="padding-left:30%;padding-right:30%; padding-top: 3%;" >
+        <lightning-card  title="TO DO APPLICATION">
+
+        
+            <lightning-button-icon 
+            icon-name="utility:sync" slot="actions"
+            alternative-text="Sync"
+            title="Sync">
+            </lightning-button-icon>
+    
+        <div class="slds-var-p-around_small">
+    
+            
+    
+            <ul class="slds-has-dividers_around-space">
+
+                
+                    <li class="slds-item" style="margin-bottom:40px ;">
+                    <lightning-layout vertical-align="center" >
+                        <lightning-layout-item style="padding-right:85%;padding-left:10px;">
+                            Task 1
+                        </lightning-layout-item>
+                        <lightning-layout-item >
+                            <lightning-button-icon aria-label="Delete Button" 
+                            icon-name="utility:delete"
+                            alternative-text="Delete"
+                            title="Delete"
+                            onclick={handleDelete} >
+                            </lightning-button-icon>
+                        </lightning-layout-item>
+                    </lightning-layout>                       
+                    </li>
+                
+                    <li class="slds-item" style="margin-bottom:40px ;">
+                    <lightning-layout vertical-align="center" >
+                        <lightning-layout-item style="padding-right:85%;padding-left:10px;">
+                            Task 2
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-button-icon 
+                            icon-name="utility:delete"
+                            alternative-text="Delete"
+                            title="Delete"
+                            onclick={handleDelete}>
+                            </lightning-button-icon>
+                        </lightning-layout-item>
+                    </lightning-layout>                       
+                    </li>
+                
+                    <li class="slds-item" style="margin-bottom:40px ;">
+                    <lightning-layout vertical-align="center" >
+                        <lightning-layout-item style="padding-right:85%;padding-left:10px;">
+                            Task 3
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-button-icon 
+                            icon-name="utility:delete"
+                            alternative-text="Delete"
+                            title="Delete"
+                            onclick={handleDelete} >
+                            </lightning-button-icon>
+                        </lightning-layout-item>
+                    </lightning-layout>                       
+                    </li>
+                    <li class="slds-item" style="margin-bottom:40px ;">
+                    <lightning-layout vertical-align="center" >
+                        <lightning-layout-item style="padding-right:85%;padding-left:10px;">
+                            Task 4
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-button-icon 
+                            icon-name="utility:delete"
+                            alternative-text="Delete"
+                            title="Delete"
+                            onclick={handleDelete}>
+                            </lightning-button-icon>
+                        </lightning-layout-item>
+                    </lightning-layout>                       
+                    </li>
+                    
+
+            </ul>
+    
+ 
+            
+
+    
+            <p slot="footer" class="slds-align_absolute-center">           
+                <lightning-layout>
+                    <lightning-layout-item>
+                        <lightning-input type="text"  placeholder="Enter Some Text" ></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item style="padding-top:20px">                   
+                        <lightning-button variant="brand" label="ADD" title="ADD" onclick={handleAddClick} class="slds-var-m-left_x-small"></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </p>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        </div>
+        </lightning-card>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    <lightning-card>
+    <div class="slds-var-p-around_medium">
+
+        <lightning-input label="Country Name" value={country} onchange={changeHandler}></lightning-input>
+        <template lwc:if={getcountry}>
+            <p> yes you are in america </p>
+        </template>
+
+        <template lwc:else>
+            <p>No you are not in america </p>
+        </template>
+        
+        <div>
+            <lightning-button variant="Brand" label={getLabel}  onclick={buttonHandler}></lightning-button>
+        </div> 
+        <div>   
+            <template lwc:if={students}>
+                <p> Students are in the class </p>
+            </template>
+            <template lwc:else>
+                <p>Students are not in the class</p>
+            </template>
+    
+        </div>
+        
+    </div>
+    </lightning-card>
+    
+</template>
+
+

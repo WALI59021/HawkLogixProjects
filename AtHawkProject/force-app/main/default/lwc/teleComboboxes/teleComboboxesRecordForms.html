@@ -1,0 +1,99 @@
+<template>
+    
+    
+
+        <lightning-card title="Create New Facility">
+     
+           
+                
+          
+            <div style="width: 50%; padding:2px;background:rgb(65, 126, 224);">
+            <div style="background-color:rgb(255, 255, 255);padding:25px;"> 
+                
+                <lightning-combobox
+                    label="Facility Name"
+                    value={value}
+                    placeholder="Select"
+                    options={options} 
+                    onchange={handleSourceChange}> 
+                </lightning-combobox>           
+        
+            </div>
+                    <lightning-input label="The Value for this Region is:" 
+                    value={value}></lightning-input>     
+            </div>
+     
+            <template if:true={test}> 
+            <div style="width: 50%; padding:2px;background:rgb(65, 126, 224);">
+            <div style="background-color:rgb(241, 241, 241);padding:25px;"> 
+                
+                <lightning-combobox
+                    label="System Name" 
+                    value={value1}
+                    placeholder="Select"
+                    options={options2} 
+                    onchange={handleChange}> 
+                </lightning-combobox>           
+        
+            </div>
+                    <lightning-input label="The Value for this System is:" 
+                    value={value1}></lightning-input>
+            </div>
+            </template>
+      
+            <lightning-card title="Create Facility">
+                <lightning-input label="Enter Name of the Facility Name: " onchange={hfChange}></lightning-input>
+                <lightning-input label="Enter Number of Employees:  " onchange={heChange}></lightning-input>
+                <lightning-button label="Create Facility" onclick={createFacility}></lightning-button>
+            </lightning-card>
+        
+        </lightning-card>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+</template>
