@@ -1,0 +1,43 @@
+body {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', Arial, sans-serif;
+    background-image: url("images/vintage-pocket-watch-7439233_1920.jpg"); 
+    background-size: cover; 
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    color: darkgreen;
+}
+
+#message-el {
+    font-style: italic;
+}
+
+
+button {
+    color: darkslategray;
+    width: 150px;
+    background: darkgray;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: larger;
+    border: none;
+    border-radius: 4px;
+}
+
+p {
+    color: darkcyan;
+    font-weight: bolder;
+    font-size: larger;
+
+}
+
+/* .btn-container{
+    display: flex;
+    align-items: center;
+    height: 100vh;
+} */
